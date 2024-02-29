@@ -9,19 +9,13 @@ function App() {
   // // Store the selected country in a new state
   // const [stateName, setStateName ] = useState('');
 
-  const sortCountries =[...countries]
-    .sort((a:any,b:any) => {
-      return a.name > b.name ? 1 : -1
-  })
-  const sortStates =[...states]
-    .sort((a:any,b:any) => {
-      return a.name > b.name ? 1 : -1
-  })
-
   useEffect(() => {
     axios
       .get('https://xc-countries-api.fly.dev/api/countries/')
       .then((response: any) => {
+        response.data.sort((a:any,b:any) => {
+          return a.name > b.name ? 1 : -1
+        })
         setCountries(response.data);
       });
   }, []);
@@ -33,6 +27,9 @@ function App() {
     }
     axios.get(`https://xc-countries-api.fly.dev/api/countries/${currentCountry}/states/`)
       .then((response: any) => {
+        response.data.sort((a:any,b:any) => {
+          return a.name > b.name ? 1 : -1
+        })
         setStates(response.data);
       });
   }, [currentCountry]);
@@ -51,12 +48,12 @@ function App() {
       </label>
       <select
         onChange={handleChange}>
-        {sortCountries.map((country: any) => {
+        {countries.map((country: any) => {
           return <option value={country.code}>{country.name}</option>;
         })}
       </select>
       <select>
-        {sortStates.map((state: any) => {
+        {states.map((state: any) => {
           return <option value={state.code}>{state.name}</option>;
         })}
       </select>
