@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import { Form } from "react-router-dom";
 
 type Country = {
   id: number;
