@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 
 type Country = {
@@ -10,21 +10,22 @@ type Country = {
 const AddState = () => {
   const [stateName, setStateName] = useState('');
   const [stateCode, setStateCode] = useState('');
-  const [countries, setCountries] = useState<any[]>([])
+  const [countries, setCountries] = useState([] as Country[]);
   const [newCountryId, setNewCountryId] = useState('');
+
 
   useEffect(() => {
     axios
-      .get('https://xc-countries-api.fly.dev/api/countries/')
-      .then((response: any) => {
-        response.data.sort((a: Country, b: Country) => {
+      .get<Country[]>('https://xc-countries-api.fly.dev/api/countries/')
+      .then((response) => {
+        response.data.sort((a, b) => {
           return a.name > b.name ? 1 : -1
         })
         setCountries(response.data);
       });
   }, []);
 
-  const handleCountryChange = (event: any) => {
+  const handleCountryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const countryId = event.target.value;
     setNewCountryId(countryId);
   };
